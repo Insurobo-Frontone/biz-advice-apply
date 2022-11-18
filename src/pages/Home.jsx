@@ -1,23 +1,32 @@
 import React from 'react'
 import styled from 'styled-components';
-import Form from '../components/Form';
+import ApplyForm from '../components/Apply';
 import Header from '../components/Header';
-import Button from '../components/Button';
 
 const Wrap = styled.div`
   background-color: ${(props) => props.theme.color.BG_GRAY};
-  height: 3332px;
   padding-top: 100px;
+  padding-bottom: 200px;
+  display: flex;
+  justify-content: center;
+  ${props => props.theme.window.mobile} {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 `;
 
 const ContentContainer = styled.div`
-  max-width: 768px;
-  padding: 60px 34px;
-  margin: 0 auto;
+  width: 768px;
   border: 1px solid #D8D8D8;
   border-radius: 21px;
   background-color: ${(props) => props.theme.color.WHITE};
-  margin-bottom: 47px;
+
+  ${props => props.theme.window.mobile} {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+  }
+
 `;
 
 function Home() {
@@ -25,9 +34,8 @@ function Home() {
     <Wrap>
       <ContentContainer>
         <Header />
-        <Form />
+        <ApplyForm />
       </ContentContainer>
-      <Button title='가입신청' />
     </Wrap>
   )
 }

@@ -1,6 +1,37 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
+@font-face {
+    font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-Black.otf') format('otf');
+    font-weight: 800;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-Bold.otf') format('otf');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-Medium.otf') format('otf');
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-Regular.otf') format('otf');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-Light.otf') format('otf');
+    font-weight: 300;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-Thin.otf') format('otf');
+    font-weight: 200;
+  }
+
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -20,7 +51,9 @@ const GlobalStyle = createGlobalStyle`
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Noto Sans KR';
+    letter-spacing: -1px;
+    font-weight: 300;
     -webkit-tap-highlight-color: transparent; 
     outline: none; 
     -ms-touch-action: manipulation; 

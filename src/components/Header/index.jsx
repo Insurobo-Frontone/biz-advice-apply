@@ -1,39 +1,46 @@
 import React from 'react'
 import styled from 'styled-components';
 import logo from '../../assets/img/insurobo-ci.png';
+import Title from '../Title';
 
 const Container = styled.div`
-
+  padding: 60px 34px 50px;
+  ${(props) => props.theme.window.mobile} {
+    padding: 61px 28px 25px;
+  }
 `;
 
 const LogoBox = styled.div`
   display: flex;
   align-items: center;
+  
+  ${(props) => props.theme.window.mobile} {
+    width: 100px;
+  }
 `;
 
 const Logo = styled.img`
   max-width: 100%;
 `;
 
-const Title = styled.h1`
-  font-weight: 700;
-  font-size: 20px;
+const TitleBox = styled.div`
   text-align: center;
-  color: ${(props) => props.theme.color.BLACK};
-  padding: 60px 0 37px;
-  ${(props) => props.theme.window.tab} {
+  padding-top: 60px;
 
+  ${props => props.theme.window.mobile} {
+    padding-top: 35px;
   }
 `;
+
 function Header() {
   return (
     <Container>
       <LogoBox>
         <Logo src={logo} alt='insurobo'/>
       </LogoBox>
-      <div>
-        <Title>기업자문신청서</Title>
-      </div>
+      <TitleBox>
+        <Title title='기업자문신청서' bigTitle padding />
+      </TitleBox>
     </Container>
     
   )

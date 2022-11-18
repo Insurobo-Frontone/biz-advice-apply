@@ -4,8 +4,7 @@ import styled from 'styled-components'
 
 
 const Button = styled.button`
-  width: 768px;
-  max-width: 100%;
+  width: 100%;
   height: 70px;
   margin: 0 auto;
   display: flex;
@@ -20,11 +19,15 @@ const Button = styled.button`
     font-size: 15px;
     font-weight: 500;
   }
+
+  ${(props) => props.theme.window.mobile} {
+    height: 50px;
+  }
 `;
 
-const ButtonComponent = ({ title }) => {
+const ButtonComponent = ({ title, type }) => {
   return (
-      <Button>
+      <Button type={type}>
         <span>{title}</span>
       </Button>
    

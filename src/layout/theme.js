@@ -1,8 +1,6 @@
 const size = {
   smallMobile: 350,
-  mobile: 767.98,
-  tab: 991.98,
-  pc: 1299.98,
+  mobile: 768,
 };
 
 export const theme = {
@@ -17,8 +15,6 @@ export const theme = {
   window: {
     smallMobile: `@media screen and (max-width: ${size.smallMobile}px)`,
     mobile: `@media screen and (max-width: ${size.mobile}px)`,
-    tab: `@media screen and (max-width: ${size.tab}px)`,
-    pc: `@media screen and (max-width: ${size.pc}px)`,
   }
 }
 
