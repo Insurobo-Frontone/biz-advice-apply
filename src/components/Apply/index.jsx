@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import DaumPostcode from "react-daum-postcode";
 import Popup from '../Popup';
@@ -948,21 +948,18 @@ const FormComponent = () => {
             {...register('CNSUT', {
               validate: { check: () => checkValid() ? true : '오류' }})
             }>
-            {CHECK_DATA.map((item) => {
-              return (
-                <>
-                  <CheckInputGroup>
-                    <label for={item.id}>{item.label}</label>
-                    <input
-                      id={item.id}
-                      type='checkbox'
-                      onClick={() => trigger()}
-                      defaultChecked={item.checked}
-                      {...register(item.name)}
-                    />
-                  </CheckInputGroup>
-                </>
-              )})}
+            {CHECK_DATA.map((item) => (
+              <CheckInputGroup key={item.id}>
+                <label for={item.id}>{item.label}</label>
+                <input
+                  id={item.id}
+                  type='checkbox'
+                  onClick={() => trigger()}
+                  defaultChecked={item.checked}
+                  {...register(item.name)}
+                />
+              </CheckInputGroup>
+            ))}
           </CheckList>
           <ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>
         </InputContainer>
