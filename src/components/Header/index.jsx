@@ -6,7 +6,7 @@ import Title from '../Title';
 const Container = styled.div`
   padding: 60px 34px 50px;
   ${(props) => props.theme.window.mobile} {
-    padding: 61px 28px 25px;
+    padding: 61px 28px 93px;
   }
 `;
 

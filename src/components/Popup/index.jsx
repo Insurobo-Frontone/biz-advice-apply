@@ -22,6 +22,11 @@ const ButtonContainer = styled.div`
   justify-content: flex-end;
   top: 6%;
   width: 600px;
+
+  ${props => props.theme.window.mobile} {
+    top: 10px;
+    width: 100%;
+  }
 `;
 
 const Button = styled.button`
@@ -29,9 +34,17 @@ const Button = styled.button`
   width: 20px;
   height: 20px;
   background-image: url(${closeIcon});
+  background-repeat: no-repeat;
   border: none;
   background-color: transparent;
   cursor: pointer;
+
+  ${props => props.theme.window.mobile} {
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    
+  }
 `;
 
 function Popup({ children, onClick }) {

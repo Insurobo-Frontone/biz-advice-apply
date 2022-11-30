@@ -10,7 +10,8 @@ export const theme = {
     GRAY: '#585858',
     WHITE: '#FFFFFF',
     INPUT_GRAY: '#D8D8D8',
-    BG_GRAY: '#E5E5E5'
+    BG_GRAY: '#E5E5E5',
+    WARNING: '#C90000',
   },
   window: {
     smallMobile: `@media screen and (max-width: ${size.smallMobile}px)`,
