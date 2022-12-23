@@ -13,6 +13,7 @@ import selectIconMb from '../../assets/icon/select-icon-mb.png';
 import selectIconReversMb from '../../assets/icon/select-icon-revers-mb.png';
 import checkicon from '../../assets/icon/checkbox-icon.png';
 
+
 const CHECK_DATA = [
   { id: 1, name: 'CNSUT_LAW', label: '법률', checked: true},
   { id: 2, name: 'CNSUT_TAX', label: '세무·회계', checked: false},
@@ -80,9 +81,6 @@ const CheckInputGroup = styled.li`
     border: none;
   }
 
-  input[type='date'] {
-
-  }
 
   ${props => props.theme.window.mobile} {
     label {
@@ -135,8 +133,59 @@ const InputBox = styled.div`
   flex-direction: column;
   margin-bottom: 30px;
 
+  input[type=date] {
+    width: 100%;
+    padding: 13px 16px;
+    height: 50px;
+    border: 1px solid #D8D8D8;
+    border-radius: 5px;
+    font-size: 13px;
+    box-sizing: border-box;
+    background: none;
+    position: relative;
+  }
+  /* input[type=date]::-webkit-datetime-edit-text {
+    -webkit-appearance: none;
+    display: none;
+  }
+  input[type=date]::-webkit-datetime-edit-month-field{
+    -webkit-appearance: none;
+    display: none;
+  }
+  input[type=date]::-webkit-datetime-edit-day-field {
+    -webkit-appearance: none;
+    display: none;
+  }
+  input[type=date]::-webkit-datetime-edit-year-field {
+    -webkit-appearance: none;
+    display: none;
+  } */
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-clear-button {
+    display: none;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+  }
+  input[type="date"]::before {
+    content: attr(data-placeholder);
+    width: 100%;
+  }
+  input[type="date"]:valid::before {
+    display: none;
+  }
   ${props => props.theme.window.mobile} {
     margin-bottom: 20px;
+
+    input[type=date] {
+      padding: 7px;
+      height: 35px;
+    }
   }
 `;
 
@@ -152,6 +201,8 @@ const Input = styled.input`
   ::placeholder {
     color: ${(props) => props.theme.color.INPUT_GRAY};
   }
+
+ 
 
   ${props => props.theme.window.mobile} {
     padding: 7px;
@@ -618,10 +669,10 @@ const FormComponent = () => {
         <InputGrop>
           <InputBox>
             <Title title='설립일' />
-            <Input 
+            <input
+              data-placeholder='설립일'
               type='date' 
               name='FOND_DATE'
-              placeholder='날짜 선택'
               {...register('FOND_DATE', {
                 required: '*필수 입력 항목입니다.',
               })} 
@@ -811,7 +862,7 @@ const FormComponent = () => {
               <Input 
                 type='text' 
                 name='ENTRPRS_GRAD'
-                placeholder='기업등급 + 현재날짜'
+                placeholder='ex) bbb-2022.11.16'
                 {...register('ENTRPRS_GRAD', {
                   required: '*필수 입력 항목입니다.',
                 })}
@@ -946,7 +997,7 @@ const FormComponent = () => {
           <Title title='자문분야' />
           <CheckList 
             {...register('CNSUT', {
-              validate: { check: () => checkValid() ? true : '오류' }})
+              validate: { check: () => checkValid() ? true : '*필수 체크 항목입니다' }})
             }>
             {CHECK_DATA.map((item) => (
               <CheckInputGroup key={item.id}>
