@@ -24,7 +24,7 @@ const Title = styled.h2`
   }
 `;
 
-const TitleComponent = ({ title, subTitle, bigTitle, padding }) => {
+const TitleComponent = ({ title, subTitle, bigTitle, padding}) => {
   return (
     <Title bigTitle={bigTitle} padding={padding}>
       {title}

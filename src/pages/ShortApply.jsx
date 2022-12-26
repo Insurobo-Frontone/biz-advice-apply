@@ -1,13 +1,14 @@
-import React from 'react'
+import React from 'react';
 import ApplyForm from '../components/Apply';
 import Layout from '../components/Layout';
 
-function Home() {
+
+function ShortApply() {
   return (
     <Layout>
-      <ApplyForm detail />
+      <ApplyForm short />
     </Layout>
   )
 }
 
-export default Home
+export default ShortApply
