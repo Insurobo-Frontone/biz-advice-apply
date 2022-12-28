@@ -381,6 +381,7 @@ const FormComponent = ({detail, short}) => {
 
   // 데이터 전송
   const onSubmit = async(data) => {
+    setValue('VERSION', detail ? 'D' : 'S')
     console.log(JSON.stringify(data), data)
     
     await fetch('http://localhost:3000/', {
