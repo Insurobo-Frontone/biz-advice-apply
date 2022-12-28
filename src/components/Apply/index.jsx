@@ -382,6 +382,7 @@ const FormComponent = ({detail, short}) => {
   // 데이터 전송
   const onSubmit = async(data) => {
     console.log(JSON.stringify(data), data)
+    
     await fetch('http://localhost:3000/', {
       method: 'POST',
       headers: { 'Content-type': 'application/json' },
@@ -408,6 +409,7 @@ const FormComponent = ({detail, short}) => {
   }
 
   const onError = (error) => {
+    setValue('VERSION', detail ? 'D' : 'S')
     console.log(watch())
     console.log(error);
   }
@@ -665,7 +667,7 @@ const FormComponent = ({detail, short}) => {
                    required: '*필수 입력 항목입니다.',
                    pattern: {
                      value: /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/,
-                     message: '잘못된 전화번호'
+                     message: '잘못된 전화번호 입니다.'
                    }
                  })} />
                  <ErrorMessage>{errors.CHARGER_TELNO?.message}</ErrorMessage>
@@ -1091,7 +1093,7 @@ const FormComponent = ({detail, short}) => {
                    required: '*필수 입력 항목입니다.',
                    pattern: {
                      value: /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/,
-                     message: '잘못된 전화번호'
+                     message: '잘못된 전화번호 입니다.'
                    }
                  })} />
                  <ErrorMessage>{errors.CHARGER_TELNO?.message}</ErrorMessage>
@@ -1103,8 +1105,8 @@ const FormComponent = ({detail, short}) => {
                   <input
                     data-placeholder='희망일정'
                     type='date' 
-                    name='SCHEDULE'
-                    {...register('SCHEDULE', {
+                    name='HOPE_SCHDUL'
+                    {...register('HOPE_SCHDUL', {
                       required: '*필수 입력 항목입니다.',
                     })} 
                     />
@@ -1114,7 +1116,7 @@ const FormComponent = ({detail, short}) => {
         </InputContainer>
       )}
         <ButtonContainer>
-          <Button title='가입신청' type='submit' />
+          <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION')} />
         </ButtonContainer>
       </ApplyContainer>
     </>
