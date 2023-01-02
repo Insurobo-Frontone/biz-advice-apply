@@ -230,13 +230,6 @@ const Label = styled.label`
   }
 `;
 
-const ButtonContainer = styled.div`
-
-${(props) => props.theme.window.mobile} {
-
-}
-`;
-
 const Button = styled.div`
   position: absolute;
   bottom: -120px;
@@ -1054,8 +1047,7 @@ const FormComponent = ({detail, short}) => {
                </CheckList>
                <ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>
              </InputContainer>
-             <ButtonContainer>
-              <Button>
+             <Button>
                 <span>가입신청</span>
                 <ButtonValue 
                   name='VERSION'
@@ -1063,8 +1055,7 @@ const FormComponent = ({detail, short}) => {
                   onClick={handleSubmit(onSubmit, onError)}
                   {...register('VERSION')}  />
               </Button>
-             </ButtonContainer>
-        </>
+          </>
       )}
 
       {short && (
@@ -1158,16 +1149,14 @@ const FormComponent = ({detail, short}) => {
                 </InputBox>
             </InputGrop>
         </InputContainer>
-        <ButtonContainer>
-          <Button>
-            <span>가입신청</span>
-            <ButtonValue 
-              name='VERSION'
-              value={'S'}
-              onClick={handleSubmit(onSubmit, onError)}
-              {...register('VERSION')}  />
-          </Button>
-        </ButtonContainer>
+        <Button>
+          <span>가입신청</span>
+          <ButtonValue 
+            name='VERSION'
+            value={'S'}
+            onClick={handleSubmit(onSubmit, onError)}
+            {...register('VERSION')}  />
+        </Button>
     </>
       )}
       </ApplyContainer>
