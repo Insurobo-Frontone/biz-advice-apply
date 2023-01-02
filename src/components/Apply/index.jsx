@@ -381,7 +381,6 @@ const FormComponent = ({detail, short}) => {
 
   // 데이터 전송
   const onSubmit = async(data) => {
-    setValue('VERSION', detail ? 'D' : 'S')
     console.log(JSON.stringify(data), data)
     
     await fetch('http://localhost:3000/', {
@@ -410,7 +409,6 @@ const FormComponent = ({detail, short}) => {
   }
 
   const onError = (error) => {
-    setValue('VERSION', detail ? 'D' : 'S')
     console.log(watch())
     console.log(error);
   }
@@ -1117,7 +1115,11 @@ const FormComponent = ({detail, short}) => {
         </InputContainer>
       )}
         <ButtonContainer>
-          <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION')} />
+          <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION', {
+            validate: {
+              value: () => setValue('VERSION', detail ? 'D' : 'S') 
+            }
+          })} />
         </ButtonContainer>
       </ApplyContainer>
     </>
