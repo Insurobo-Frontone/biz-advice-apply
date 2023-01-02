@@ -535,6 +535,7 @@ const FormComponent = ({detail, short}) => {
     )}
     <ApplyContainer onSubmit={handleSubmit(onSubmit, onError)}>
       {detail && (
+        <>
           <InputContainer>
              <InputGrop>
                <InputBox>
@@ -1021,9 +1022,18 @@ const FormComponent = ({detail, short}) => {
                </CheckList>
                <ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>
              </InputContainer>
+             <ButtonContainer>
+             <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION', {
+               validate: {
+                 value: () => setValue('VERSION', 'D') 
+               }
+             })} />
+           </ButtonContainer>
+        </>
       )}
 
       {short && (
+        <>
         <InputContainer>
           <InputGrop>
             <InputBox>
@@ -1109,18 +1119,20 @@ const FormComponent = ({detail, short}) => {
                       required: '*필수 입력 항목입니다.',
                     })} 
                     />
-                  <ErrorMessage>{errors.SCHEDULE?.message}</ErrorMessage>
+                  <ErrorMessage>{errors.HOPE_SCHDUL?.message}</ErrorMessage>
                 </InputBox>
             </InputGrop>
         </InputContainer>
-      )}
         <ButtonContainer>
-          <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION', {
-            validate: {
-              value: () => setValue('VERSION', detail ? 'D' : 'S') 
-            }
-          })} />
-        </ButtonContainer>
+        <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION', {
+          validate: {
+            value: () => setValue('VERSION', 'S') 
+          }
+        })} />
+      </ButtonContainer>
+    </>
+      )}
+        
       </ApplyContainer>
     </>
   )
