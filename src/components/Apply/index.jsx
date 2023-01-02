@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import DaumPostcode from "react-daum-postcode";
 import Popup from '../Popup';
-import Button from '../Button'
 import Title from '../Title';
 import { useForm } from 'react-hook-form';
 
@@ -29,7 +28,7 @@ const ApplyContainer = styled.form`
   padding-bottom: 61px;
 
   ${(props) => props.theme.window.mobile} {
-    padding-bottom: 92px;
+    padding: 0 26px 92px;
   }
 `;
 
@@ -37,7 +36,7 @@ const InputContainer = styled.div`
   padding: 0 34px;
 
   ${(props) => props.theme.window.mobile} {
-    padding: 0 24px;
+    padding: 0;
   }
 `;
 
@@ -192,6 +191,8 @@ const InputBox = styled.div`
   }
 `;
 
+
+
 const Input = styled.input`
   width: 100%;
   padding: 13px 16px;
@@ -229,18 +230,49 @@ const Label = styled.label`
   }
 `;
 
-
 const ButtonContainer = styled.div`
+
+${(props) => props.theme.window.mobile} {
+
+}
+`;
+
+const Button = styled.div`
   position: absolute;
   bottom: -120px;
   width: 100%;
+  height: 70px;
   margin-top: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: none;
+  background-color: ${(props) => props.theme.color.PRIMARY};
+
+  > span {
+    cursor: pointer;
+    color: ${(props) => props.theme.color.WHITE};
+    font-size: 15px;
+    font-weight: 500;
+  }
+
 
   ${(props) => props.theme.window.mobile} {
-    padding: 0 24px;
-    position: static;
-    margin-top: 42px;
+    height: 50px;
+    bottom: 0;
+    position: relative;
   }
+`;
+
+const ButtonValue = styled.input`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  color: transparent;
+  cursor: pointer;
+  display: block;
 `;
 
 const SearchInput = styled.div`
@@ -381,6 +413,7 @@ const FormComponent = ({detail, short}) => {
 
   // 데이터 전송
   const onSubmit = async(data) => {
+    console.log(watch())
     console.log(JSON.stringify(data), data)
     
     await fetch('http://localhost:3000/', {
@@ -409,7 +442,6 @@ const FormComponent = ({detail, short}) => {
   }
 
   const onError = (error) => {
-    console.log(watch())
     console.log(error);
   }
   const openPostCode = () => {
@@ -533,7 +565,7 @@ const FormComponent = ({detail, short}) => {
         />
       </Popup>
     )}
-    <ApplyContainer onSubmit={handleSubmit(onSubmit, onError)}>
+    <ApplyContainer>
       {detail && (
         <>
           <InputContainer>
@@ -1023,12 +1055,15 @@ const FormComponent = ({detail, short}) => {
                <ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>
              </InputContainer>
              <ButtonContainer>
-             <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION', {
-               validate: {
-                 value: () => setValue('VERSION', 'D') 
-               }
-             })} />
-           </ButtonContainer>
+              <Button>
+                <span>가입신청</span>
+                <ButtonValue 
+                  name='VERSION'
+                  value={'D'}
+                  onClick={handleSubmit(onSubmit, onError)}
+                  {...register('VERSION')}  />
+              </Button>
+             </ButtonContainer>
         </>
       )}
 
@@ -1124,15 +1159,17 @@ const FormComponent = ({detail, short}) => {
             </InputGrop>
         </InputContainer>
         <ButtonContainer>
-        <Button title='가입신청' type='submit' name='VERSION' {...register('VERSION', {
-          validate: {
-            value: () => setValue('VERSION', 'S') 
-          }
-        })} />
-      </ButtonContainer>
+          <Button>
+            <span>가입신청</span>
+            <ButtonValue 
+              name='VERSION'
+              value={'S'}
+              onClick={handleSubmit(onSubmit, onError)}
+              {...register('VERSION')}  />
+          </Button>
+        </ButtonContainer>
     </>
       )}
-        
       </ApplyContainer>
     </>
   )

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 
 
-const Button = styled.button`
+const Button = styled.input`
   width: 100%;
   height: 70px;
   margin: 0 auto;
@@ -25,11 +25,13 @@ const Button = styled.button`
   }
 `;
 
-const ButtonComponent = ({ title, type }) => {
+const ButtonComponent = ({ title, value, name }) => {
   return (
-      <Button type={type}>
+      <Button>
         <span>{title}</span>
+        <input type='button' value={value} name={name}/>
       </Button>
+        
    
   )
 }
