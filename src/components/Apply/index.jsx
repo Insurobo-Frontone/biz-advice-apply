@@ -405,19 +405,29 @@ const FormComponent = ({detail, short}) => {
   
 
   // 데이터 전송
-  const onSubmit = async(data) => {
+  const onSubmit = (data) => {
     console.log(watch())
     console.log(JSON.stringify(data), data)
     
-    await fetch('http://localhost:3000/', {
+    const jsonData = JSON.stringify(data);
+    
+    fetch('https://insrb.com/bizAdvice/apply', {
       method: 'POST',
-      headers: { 'Content-type': 'application/json' },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(() => {
-      alert('신청이 완료되었습니다.')
-      reset()
+      headers: { 'Content-Type': 'application/json' },
+      body: jsonData
+    }).then((res) => {
+      if (res.status == 417) {
+        alert('처리중 오류가 발생하였습니다. 잠시 후 다시 신청해 주시기 바랍니다.')
+        // reset()
+      }
+      if (res.status == 404) {
+        alert('처리중 오류가 발생하였습니다. 잠시 후 다시 신청해 주시기 바랍니다.')
+        // reset()
+      }
+      else {
+        alert('신청이 완료되었습니다.')
+        reset()
+      }
     })
   }
   
