@@ -23,6 +23,11 @@ const GlobalStyle = createGlobalStyle`
   }
   @font-face {
     font-family: 'Noto Sans KR';
+    src: url('./assets/fonts/NotoSansKR-DemiLight.otf') format('otf');
+    font-weight: 350;
+  }
+  @font-face {
+    font-family: 'Noto Sans KR';
     src: url('./assets/fonts/NotoSansKR-Light.otf') format('otf');
     font-weight: 300;
   }

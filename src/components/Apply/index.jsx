@@ -11,7 +11,7 @@ import searchIcon from '../../assets/icon/search-icon.png';
 import selectIconMb from '../../assets/icon/select-icon-mb.png';
 import selectIconReversMb from '../../assets/icon/select-icon-revers-mb.png';
 import checkicon from '../../assets/icon/checkbox-icon.png';
-
+import checkedIcon from '../../assets/icon/checkedIcon.png';
 
 const CHECK_DATA = [
   { id: 1, name: 'CNSUT_LAW', label: '법률', checked: true},
@@ -28,7 +28,7 @@ const ApplyContainer = styled.form`
   padding-bottom: 61px;
 
   ${(props) => props.theme.window.mobile} {
-    padding: 0 26px 92px;
+    padding: 0 26px 45px;
   }
 `;
 
@@ -42,6 +42,11 @@ const InputContainer = styled.div`
 
 const CheckList = styled.ul`
   width: 100%;
+  margin-bottom: 30px;
+
+  ${(props) => props.theme.window.mobile} {
+    margin-bottom: 20px;
+  }
 `;
 
 const CheckInputGroup = styled.li`
@@ -49,7 +54,7 @@ const CheckInputGroup = styled.li`
   display: flex;
   align-items: center;
   border-bottom: 1px solid #D8D8D8;
-
+  
   > label {
     width: 100%;
     height: 100%;
@@ -133,7 +138,7 @@ const InputBox = styled.div`
   flex-direction: column;
   margin-bottom: 30px;
 
-  input[type=date] {
+  input[type="date"] {
     width: 100%;
     padding: 13px 16px;
     height: 50px;
@@ -144,22 +149,7 @@ const InputBox = styled.div`
     background: none;
     position: relative;
   }
-  /* input[type=date]::-webkit-datetime-edit-text {
-    -webkit-appearance: none;
-    display: none;
-  }
-  input[type=date]::-webkit-datetime-edit-month-field{
-    -webkit-appearance: none;
-    display: none;
-  }
-  input[type=date]::-webkit-datetime-edit-day-field {
-    -webkit-appearance: none;
-    display: none;
-  }
-  input[type=date]::-webkit-datetime-edit-year-field {
-    -webkit-appearance: none;
-    display: none;
-  } */
+
   input[type="date"]::-webkit-inner-spin-button,
   input[type="date"]::-webkit-clear-button {
     display: none;
@@ -180,11 +170,14 @@ const InputBox = styled.div`
     display: none;
   }
 
-
   ${props => props.theme.window.mobile} {
     margin-bottom: 20px;
 
-    input[type=date] {
+    ${props => props.last && css`
+      margin-bottom: 0;
+    `}
+
+    input[type="date"] {
       padding: 7px;
       height: 35px;
     }
@@ -205,8 +198,6 @@ const Input = styled.input`
   ::placeholder {
     color: ${(props) => props.theme.color.INPUT_GRAY};
   }
-
- 
 
   ${props => props.theme.window.mobile} {
     padding: 7px;
@@ -255,6 +246,11 @@ const Button = styled.div`
     height: 50px;
     bottom: 0;
     position: relative;
+    margin-top: 40px;
+
+    ${props => props.short && css`
+    margin-top: 57px;
+    `}
   }
 `;
 
@@ -390,6 +386,63 @@ const ErrorMessage = styled.p`
   color: ${(props) => props.theme.color.WARNING};
 `;
 
+const CalenderTitle = styled.div`
+  display: flex;
+
+`;
+
+const SubCheckGroup = styled.div`
+  display: flex;
+  align-items: flex-start;
+  padding: 0 11px;
+
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    appearance: none;
+    border: 1px solid #D8D8D8;
+    margin: 0;
+  }
+
+  input[type="checkbox"]:checked {
+    background-image: url(${checkedIcon});
+    background-color: #5974FF;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-color: #5974FF;
+  }
+
+  label {
+    font-size: 15px;
+    color: #D8D8D8;
+    margin-left: 8px;
+    font-weight: 350;
+    letter-spacing: 0.5px;
+    /* transform: scaleY(1.1); */
+  }
+
+  ${props => props.theme.window.mobile} {
+    label {
+      font-size: 13px;
+    }
+  }
+`;
+
+const TextArea = styled.textarea`
+  border: 1px solid #D8D8D8;
+  resize: none;
+  width: 100%;
+  border-radius: 5px;
+  height: 190px;
+  box-sizing: border-box;
+  padding: 13px 16px;
+
+  ${props => props.theme.window.mobile} {
+    height: 130px;
+    padding: 7px;
+  }
+`;
+
 const FormComponent = ({detail, short}) => {
   const { 
     register, 
@@ -402,7 +455,7 @@ const FormComponent = ({detail, short}) => {
       mode: 'onBlur',
     });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
+  const [date, setDate] = useState(false);
 
   // 데이터 전송
   const onSubmit = (data) => {
@@ -557,6 +610,12 @@ const FormComponent = ({detail, short}) => {
       }
     }
   }
+  const dateDefault = () => {
+    setDate(!date);
+    if (!date) {
+      setValue('HOPE_SCHDUL', '미정')
+    }
+  }
 
   return (
     <>
@@ -578,7 +637,7 @@ const FormComponent = ({detail, short}) => {
                  <Input type='text' name='ENTRPRS_NM' {...register('ENTRPRS_NM', {
                    required: '*필수 입력 항목입니다.'
                  })} />
-                 <ErrorMessage>{errors.ENTRPRS_NM?.message}</ErrorMessage>
+                 {errors.ENTRPRS_NM?.message && (<ErrorMessage>{errors.ENTRPRS_NM?.message}</ErrorMessage>)} 
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -589,8 +648,7 @@ const FormComponent = ({detail, short}) => {
                      check: (value) => validateBizNum(value) ? true : '유효하지 않은 사업자등록번호입니다'
                    }
                  })} />
-                 <ErrorMessage>
-                   {errors?.BUSINESS_NUMBER?.message}</ErrorMessage>
+                 {errors?.BUSINESS_NUMBER?.message && (<ErrorMessage>{errors?.BUSINESS_NUMBER?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
@@ -600,7 +658,7 @@ const FormComponent = ({detail, short}) => {
                  <Input type='text' name='RPRSNTV' {...register('RPRSNTV', {
                    required: '*필수 입력 항목입니다.',
                  })} />
-                 <ErrorMessage>{errors.RPRSNTV?.message}</ErrorMessage>
+                 {errors.RPRSNTV?.message && (<ErrorMessage>{errors.RPRSNTV?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -612,12 +670,12 @@ const FormComponent = ({detail, short}) => {
                      message: '잘못된 전화번호'
                    }
                  })} />
-                 <ErrorMessage>{errors.RPRSNTV_TELNO?.message}</ErrorMessage>
+                 {errors.RPRSNTV_TELNO?.message && (<ErrorMessage>{errors.RPRSNTV_TELNO?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
              <Title title='대표자 주민번호' />
-             <RadioGrop short>
+             <RadioGrop>
                <InputBox>
                  <Input 
                    type='number' 
@@ -629,7 +687,7 @@ const FormComponent = ({detail, short}) => {
                      }
                    })} 
                  />
-                 <ErrorMessage>{errors.RPRSNTV_RRN1?.message}</ErrorMessage>
+                 {errors.RPRSNTV_RRN1?.message && (<ErrorMessage>{errors.RPRSNTV_RRN1?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox dash><span>-</span></PaddingBox>
                <InputBox>
@@ -643,7 +701,7 @@ const FormComponent = ({detail, short}) => {
                      }
                    })}
                  />
-                 <ErrorMessage>{errors.RPRSNTV_RRN2?.message}</ErrorMessage>
+                 {errors.RPRSNTV_RRN2?.message && (<ErrorMessage>{errors.RPRSNTV_RRN2?.message}</ErrorMessage>)}
                </InputBox>
              </RadioGrop>
              
@@ -664,14 +722,12 @@ const FormComponent = ({detail, short}) => {
                      onClick={openPostCode}
                    />
                  </SearchInput>
-                 <ErrorMessage>{errors.BPLC_ADRES?.message}</ErrorMessage>
+                 {errors.BPLC_ADRES?.message && (<ErrorMessage>{errors.BPLC_ADRES?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
-     
-             
-     
-             <Title title='사업장' short/>
-             <RadioGrop short>
+    
+             <Title title='사업장'/>
+             <RadioGrop >
                <RadioBox>
                  <input type='radio' id='1' value='자가' name='BPLC' {...register('BPLC')} defaultChecked />
                  <label for='1'>
@@ -693,7 +749,7 @@ const FormComponent = ({detail, short}) => {
                  <Input type='text' name='CHARGER' {...register('CHARGER', {
                    required: '*필수 입력 항목입니다.',
                  })} />
-                 <ErrorMessage>{errors.CHARGER?.message}</ErrorMessage>
+                 {errors.CHARGER?.message && (<ErrorMessage>{errors.CHARGER?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -705,11 +761,11 @@ const FormComponent = ({detail, short}) => {
                      message: '잘못된 전화번호 입니다.'
                    }
                  })} />
-                 <ErrorMessage>{errors.CHARGER_TELNO?.message}</ErrorMessage>
+                 {errors.CHARGER_TELNO?.message && (<ErrorMessage>{errors.CHARGER_TELNO?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
-             <InputGrop short>
+             <InputGrop>
                <InputBox>
                  <Title title='설립일' />
                  <input
@@ -720,7 +776,7 @@ const FormComponent = ({detail, short}) => {
                      required: '*필수 입력 항목입니다.',
                    })} 
                    />
-                 <ErrorMessage>{errors.FOND_DATE?.message}</ErrorMessage>
+                   {errors.FOND_DATE?.message && (<ErrorMessage>{errors.FOND_DATE?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -728,11 +784,11 @@ const FormComponent = ({detail, short}) => {
                  <Input type='number' name='EMPLY' {...register('EMPLY', {
                    required: '*필수 입력 항목입니다.',
                  })} />
-                 <ErrorMessage>{errors.EMPLY?.message}</ErrorMessage>
+                 {errors.EMPLY?.message && (<ErrorMessage>{errors.EMPLY?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
-             <InputGrop short>
+             <InputGrop>
                <InputBox>
                  <Title title='업 태' />
                  <SelectBox 
@@ -760,7 +816,7 @@ const FormComponent = ({detail, short}) => {
                    <option value='전기,가스,증기 및 공업 조절 공급업'>전기,가스,증기 및 공업 조절 공급업</option>
                    <option value='전문,과학 및 기술 서비스업'>전문,과학 및 기술 서비스업</option>
                  </SelectBox>
-                 <ErrorMessage>{errors.BIZCND?.message}</ErrorMessage>
+                 {errors.BIZCND?.message && (<ErrorMessage>{errors.BIZCND?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -768,17 +824,17 @@ const FormComponent = ({detail, short}) => {
                  <Input type='text' name='INDUTY' {...register('INDUTY', {
                    required: '*필수 입력 항목입니다.',
                  })} />
-                 <ErrorMessage>{errors.INDUTY?.message}</ErrorMessage>
+                 {errors.INDUTY?.message && (<ErrorMessage>{errors.INDUTY?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
-             <InputGrop short>
+             <InputGrop>
                <InputBox>
                  <Title title='인증' />
                  <Input type='text' name='CRTFC' {...register('CRTFC', {
                    required: '*필수 입력 항목입니다.',
                  })} />
-                 <ErrorMessage>{errors.CRTFC?.message}</ErrorMessage>
+                 {errors.CRTFC?.message && (<ErrorMessage>{errors.CRTFC?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -786,12 +842,11 @@ const FormComponent = ({detail, short}) => {
                  <Input type='number' name='ILLT' {...register('ILLT', {
                    required: '*필수 입력 항목입니다.',
                  })} />
-                 <ErrorMessage>{errors.ILLT?.message}</ErrorMessage>
+                 {errors.ILLT?.message && (<ErrorMessage>{errors.ILLT?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
-     
-             <Title title='총자산' subTitle='(백만원)' padding short />
+             <Title title='총자산' subTitle='(백만원)' padding />
              <InputGrop short>
                <InputBox>
                  <Label>2021년</Label>
@@ -801,7 +856,7 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.ASSETS1?.message}</ErrorMessage>
+                 {errors.ASSETS1?.message && (<ErrorMessage>{errors.ASSETS1?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -812,7 +867,7 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.ASSETS2?.message}</ErrorMessage>
+                 {errors.ASSETS2?.message && (<ErrorMessage>{errors.ASSETS2?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox label='2019년'>
@@ -823,12 +878,11 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.ASSETS3?.message}</ErrorMessage>
+                 {errors.ASSETS3?.message && (<ErrorMessage>{errors.ASSETS3?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
      
-             <Title title='매출액' subTitle='(백만원)' padding short/>
-             <InputGrop short>
+             <Title title='매출액' subTitle='(백만원)' padding />
                <InputBox>
                  <Label>2021년</Label>
                  <SumInput>
@@ -837,7 +891,7 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.SALAMT1?.message}</ErrorMessage>
+                 {errors.SALAMT1?.message && (<ErrorMessage>{errors.SALAMT1?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -848,7 +902,7 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.SALAMT2?.message}</ErrorMessage>
+                 {errors.SALAMT2?.message && (<ErrorMessage>{errors.SALAMT2?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -859,12 +913,11 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.SALAMT3?.message}</ErrorMessage>
-               </InputBox>
-             </InputGrop>
-     
+                 {errors.SALAMT3?.message && (<ErrorMessage>{errors.SALAMT3?.message}</ErrorMessage>)}
+              </InputBox>
+  
              <Title title='영업이익' subTitle='(백만원)' padding short />
-             <InputGrop short>
+             <InputGrop>
                <InputBox>
                  <Label>2021년</Label>
                  <SumInput>
@@ -873,7 +926,7 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.BSN_PROFIT1?.message}</ErrorMessage>
+                 {errors.BSN_PROFIT1?.message && (<ErrorMessage>{errors.BSN_PROFIT1?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -884,7 +937,7 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.BSN_PROFIT2?.message}</ErrorMessage>
+                 {errors.BSN_PROFIT2?.message && (<ErrorMessage>{errors.BSN_PROFIT2?.message}</ErrorMessage>)}
                </InputBox>
                <PaddingBox />
                <InputBox>
@@ -895,279 +948,281 @@ const FormComponent = ({detail, short}) => {
                      })} 
                    />
                  </SumInput>
-                 <ErrorMessage>{errors.BSN_PROFIT3?.message}</ErrorMessage>
+                 {errors.BSN_PROFIT3?.message && (<ErrorMessage>{errors.BSN_PROFIT3?.message}</ErrorMessage>)}
                </InputBox>
              </InputGrop>
+
+            <InputGrop>
+              <InputBox>
+                <Title title='기업등급' />
+                <Input 
+                  type='text' 
+                  name='ENTRPRS_GRAD'
+                  placeholder='ex) bbb-2022.11.16'
+                  {...register('ENTRPRS_GRAD', {
+                    required: '*필수 입력 항목입니다.',
+                  })}
+                />
+                {errors.ENTRPRS_GRAD?.message && (<ErrorMessage>{errors.ENTRPRS_GRAD?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
+
+            <InputGrop>
+              <InputBox>
+                <Title title='대출기관1' />
+                <Input type='text' name='LON_INSTT1' {...register('LON_INSTT1', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_INSTT1?.message && (<ErrorMessage>{errors.LON_INSTT1?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>여신기관</Label>
+                <Input type='text' name='LON_GVRD1' {...register('LON_GVRD1', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_GVRD1?.message && (<ErrorMessage>{errors.LON_GVRD1?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>대출금액</Label>
+                <Input type='number' name='LON_AMOUNT1' {...register('LON_AMOUNT1', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_AMOUNT1?.message && (<ErrorMessage>{errors.LON_AMOUNT1?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>대출금리</Label>
+                <Input type='number' name='LON_INRST1' {...register('LON_INRST1', {
+                  required: '*필수 입력 항목입니다.',
+                   })} />
+                {errors.LON_INRST1?.message && (<ErrorMessage>{errors.LON_INRST1?.message}</ErrorMessage>)}  
+              </InputBox>
+            </InputGrop>
+
+            <InputGrop>
+              <InputBox>
+                <Title title='대출기관2' />
+                <Input type='text' name='LON_INSTT1' {...register('LON_INSTT2', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_INSTT1?.message && (<ErrorMessage>{errors.LON_INSTT1?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>여신기관</Label>
+                <Input type='text' name='LON_GVRD2' {...register('LON_GVRD2', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_GVRD2?.message && (<ErrorMessage>{errors.LON_GVRD2?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>대출금액</Label>
+                <Input type='number' name='LON_AMOUNT2' {...register('LON_AMOUNT2', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_AMOUNT2?.message && (<ErrorMessage>{errors.LON_AMOUNT2?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>대출금리</Label>
+                <Input type='number' name='LON_INRST2' {...register('LON_INRST2', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_INRST2?.message && (<ErrorMessage>{errors.LON_INRST2?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
      
-               <InputGrop short>
-                 <InputBox>
-                   <Title title='기업등급' />
-                   <Input 
-                     type='text' 
-                     name='ENTRPRS_GRAD'
-                     placeholder='ex) bbb-2022.11.16'
-                     {...register('ENTRPRS_GRAD', {
-                       required: '*필수 입력 항목입니다.',
-                     })}
-                   />
-                   <ErrorMessage>{errors.ENTRPRS_GRAD?.message}</ErrorMessage>
-                 </InputBox>
-               </InputGrop>
+            <InputGrop>
+              <InputBox bottom>
+                <Title title='대출기관3' />
+                <Input type='text' name='LON_INSTT3' {...register('LON_INSTT3', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_INSTT3?.message && (<ErrorMessage>{errors.LON_INSTT3?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>여신기관</Label>
+                <Input type='text' name='LON_GVRD3' {...register('LON_GVRD3', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_GVRD3?.message && (<ErrorMessage>{errors.LON_GVRD3?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>대출금액</Label>
+                <Input type='number' name='LON_AMOUNT3' {...register('LON_AMOUNT3', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_AMOUNT3?.message && (<ErrorMessage>{errors.LON_AMOUNT3?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label margin>대출금리</Label>
+                <Input type='number' name='LON_INRST3' {...register('LON_INRST3', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.LON_INRST3?.message && (<ErrorMessage>{errors.LON_INRST3?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
+
+            <InputGrop>
+              <InputBox>
+                <Title title='희망자금(시설)' />
+                <Input type='number' name='CPTAL1' {...register('CPTAL1', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.CPTAL1?.message && (<ErrorMessage>{errors.CPTAL1?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
+            <InputGrop>
+              <InputBox>
+                <Title title='희망자금(운전)' />
+                <Input type='number' name='CPTAL2' {...register('CPTAL2', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                  {errors.CPTAL2?.message && (<ErrorMessage>{errors.CPTAL2?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
      
-               <InputGrop short>
-                 <InputBox>
-                   <Title title='대출기관1' />
-                   <Input type='text' name='LON_INSTT1' {...register('LON_INSTT1', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_INSTT1?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>여신기관</Label>
-                   <Input type='text' name='LON_GVRD1' {...register('LON_GVRD1', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_GVRD1?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>대출금액</Label>
-                   <Input type='number' name='LON_AMOUNT1' {...register('LON_AMOUNT1', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_AMOUNT1?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>대출금리</Label>
-                   <Input type='number' name='LON_INRST1' {...register('LON_INRST1', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_INRST1?.message}</ErrorMessage>
-                 </InputBox>
-               </InputGrop>
-     
-               <InputGrop short>
-                 <InputBox>
-                   <Title title='대출기관2' />
-                   <Input type='text' name='LON_INSTT1' {...register('LON_INSTT2', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_INSTT1?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>여신기관</Label>
-                   <Input type='text' name='LON_GVRD2' {...register('LON_GVRD2', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_GVRD2?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>대출금액</Label>
-                   <Input type='number' name='LON_AMOUNT2' {...register('LON_AMOUNT2', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_AMOUNT2?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>대출금리</Label>
-                   <Input type='number' name='LON_INRST2' {...register('LON_INRST2', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_INRST2?.message}</ErrorMessage>
-                 </InputBox>
-               </InputGrop>
-     
-               <InputGrop short>
-                 <InputBox bottom>
-                   <Title title='대출기관3' />
-                   <Input type='text' name='LON_INSTT3' {...register('LON_INSTT3', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_INSTT3?.message}</ErrorMessage>
-                 </InputBox>
-                 
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>여신기관</Label>
-                   <Input type='text' name='LON_GVRD3' {...register('LON_GVRD3', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_GVRD3?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>대출금액</Label>
-                   <Input type='number' name='LON_AMOUNT3' {...register('LON_AMOUNT3', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_AMOUNT3?.message}</ErrorMessage>
-                 </InputBox>
-                 <PaddingBox />
-                 <InputBox>
-                   <Label margin>대출금리</Label>
-                   <Input type='number' name='LON_INRST3' {...register('LON_INRST3', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.LON_INRST3?.message}</ErrorMessage>
-                 </InputBox>
-                 
-               </InputGrop>
-               
-               <InputGrop short>
-                 <InputBox>
-                   <Title title='희망자금(시설)' />
-                   <Input type='number' name='CPTAL1' {...register('CPTAL1', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.CPTAL1?.message}</ErrorMessage>
-                 </InputBox>
-               </InputGrop>
-               <InputGrop short>
-                 <InputBox>
-                   <Title title='희망자금(운전)' />
-                   <Input type='number' name='CPTAL2' {...register('CPTAL2', {
-                     required: '*필수 입력 항목입니다.',
-                   })} />
-                   <ErrorMessage>{errors.CPTAL2?.message}</ErrorMessage>
-                 </InputBox>
-               </InputGrop>
-     
-               <Title title='자문분야' short/>
-               <CheckList short
-                 {...register('CNSUT', {
-                   validate: { check: () => checkValid() ? true : '*필수 체크 항목입니다' }})
-                 }>
-                 {CHECK_DATA.map((item) => (
-                   <CheckInputGroup key={item.id}>
-                     <label for={item.id}>{item.label}</label>
-                     <input
-                       id={item.id}
-                       type='checkbox'
-                       onClick={() => trigger()}
-                       defaultChecked={item.checked}
-                       {...register(item.name)}
-                     />
-                   </CheckInputGroup>
-                 ))}
-               </CheckList>
-               <ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>
-             </InputContainer>
-             <Button>
-                <span>가입신청</span>
-                <ButtonValue 
-                  name='VERSION'
-                  value={'D'}
-                  onClick={handleSubmit(onSubmit, onError)}
-                  {...register('VERSION')}  />
-              </Button>
-          </>
+            <Title title='자문분야' />
+            <CheckList
+              {...register('CNSUT', {
+                validate: { check: () => checkValid() ? true : '*필수 체크 항목입니다' }})
+              }>
+              {CHECK_DATA.map((item) => (
+                <CheckInputGroup key={item.id}>
+                  <label for={item.id}>{item.label}</label>
+                  <input
+                    id={item.id}
+                    type='checkbox'
+                    onClick={() => trigger()}
+                    defaultChecked={item.checked}
+                    {...register(item.name)}
+                  />
+                </CheckInputGroup>
+              ))}
+            </CheckList>
+            {errors.CNSUT?.message && (<ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>)}
+            
+            <Title title='기 타' name='ETC' {...register('ETC')} />
+            <TextArea />
+          </InputContainer>
+          <Button>
+            <span>가입신청</span>
+            <ButtonValue 
+              name='VERSION'
+              value={'D'}
+              onClick={handleSubmit(onSubmit, onError)}
+              {...register('VERSION')}  />
+          </Button>
+        </>
       )}
 
       {short && (
         <>
-        <InputContainer>
-          <InputGrop>
-            <InputBox>
-              <Title title='기업명' />
+          <InputContainer>
+            <InputGrop>
+              <InputBox>
+                <Title title='기업명' />
                 <Input type='text' name='ENTRPRS_NM' {...register('ENTRPRS_NM', {
                   required: '*필수 입력 항목입니다.'
                   })} 
                 />
-                 <ErrorMessage>{errors.ENTRPRS_NM?.message}</ErrorMessage>
-               </InputBox>
-               <PaddingBox />
-               <InputBox>
-                 <Title title='사업자등록번호'/>
-                 <Input type='number' name='BUSINESS_NUMBER' {...register('BUSINESS_NUMBER', {
-                   required: '*필수 입력 항목입니다.',
-                   validate: {
-                     check: (value) => validateBizNum(value) ? true : '유효하지 않은 사업자등록번호입니다'
-                   }
-                 })} />
-                 <ErrorMessage>
-                   {errors?.BUSINESS_NUMBER?.message}</ErrorMessage>
-                </InputBox>
-              </InputGrop>
-              <InputGrop>
-               <InputBox>
-                 <Title title='대표자' />
-                 <Input type='text' name='RPRSNTV' {...register('RPRSNTV', {
-                   required: '*필수 입력 항목입니다.',
-                 })} />
-                 <ErrorMessage>{errors.RPRSNTV?.message}</ErrorMessage>
-               </InputBox>
-               <PaddingBox />
-               <InputBox>
-                 <Title title='사업장 주소' />
-                 <SearchInput>
-                   <Input 
-                     type='text' 
-                     name='BPLC_ADRES'
-                     placeholder='도로명주소, 건물명 또는 지번입력'
-                     readOnly
-                     {...register('BPLC_ADRES', {
-                       required: '*필수 입력 항목입니다.'
-                     })} 
-                   />
-                   <SearchButton 
-                     onClick={openPostCode}
-                   />
-                 </SearchInput>
-                 <ErrorMessage>{errors.BPLC_ADRES?.message}</ErrorMessage>
-               </InputBox>
-             </InputGrop>
-
-             <Title title='담당자' padding />
-             <InputGrop>
-               <InputBox>      
-                 <Label>이름</Label>
-                 <Input type='text' name='CHARGER' {...register('CHARGER', {
-                   required: '*필수 입력 항목입니다.',
-                 })} />
-                 <ErrorMessage>{errors.CHARGER?.message}</ErrorMessage>
-               </InputBox>
-               <PaddingBox />
-               <InputBox>
-                 <Label>연락처</Label>
-                 <Input type='phone' name='CHARGER_TELNO' placeholder='‘-’없이 숫자만 입력해주세요' {...register('CHARGER_TELNO', {
-                   required: '*필수 입력 항목입니다.',
-                   pattern: {
-                     value: /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/,
-                     message: '잘못된 전화번호 입니다.'
-                   }
-                 })} />
-                 <ErrorMessage>{errors.CHARGER_TELNO?.message}</ErrorMessage>
-               </InputBox>
-             </InputGrop>
-             <InputGrop>
-                <InputBox>
-                  <Title title='희망일정' />
-                  <input
-                    data-placeholder='희망일정'
-                    type='date' 
-                    name='HOPE_SCHDUL'
-                    {...register('HOPE_SCHDUL', {
-                      required: '*필수 입력 항목입니다.',
-                    })} 
-                    />
-                  <ErrorMessage>{errors.HOPE_SCHDUL?.message}</ErrorMessage>
-                </InputBox>
+                {errors.ENTRPRS_NM?.message && (<ErrorMessage>{errors.ENTRPRS_NM?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Title title='사업자등록번호'/>
+                <Input type='number' name='BUSINESS_NUMBER' {...register('BUSINESS_NUMBER', {
+                  required: '*필수 입력 항목입니다.',
+                  validate: {
+                    check: (value) => validateBizNum(value) ? true : '유효하지 않은 사업자등록번호입니다'
+                  }})} />
+                  {errors?.BUSINESS_NUMBER?.message && (<ErrorMessage>{errors?.BUSINESS_NUMBER?.message}</ErrorMessage>)}
+              </InputBox>
             </InputGrop>
-        </InputContainer>
-        <Button>
-          <span>가입신청</span>
-          <ButtonValue 
-            name='VERSION'
-            value={'S'}
-            onClick={handleSubmit(onSubmit, onError)}
-            {...register('VERSION')}  />
-        </Button>
-    </>
+
+            <InputGrop>
+              <InputBox>
+                <Title title='대표자' />
+                <Input type='text' name='RPRSNTV' {...register('RPRSNTV', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.RPRSNTV?.message && (<ErrorMessage>{errors.RPRSNTV?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Title title='사업장 주소' />
+                <SearchInput>
+                <Input 
+                  type='text' 
+                  name='BPLC_ADRES'
+                  placeholder='도로명주소, 건물명 또는 지번입력'
+                  readOnly
+                    {...register('BPLC_ADRES', {
+                      required: '*필수 입력 항목입니다.'
+                    })} 
+                  />
+                  <SearchButton 
+                    onClick={openPostCode}
+                  />
+                 </SearchInput>
+                 {errors.BPLC_ADRES?.message && (<ErrorMessage>{errors.BPLC_ADRES?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
+
+            <Title title='담당자' padding />
+            <InputGrop>
+              <InputBox>      
+                <Label>이름</Label>
+                <Input type='text' name='CHARGER' {...register('CHARGER', {
+                  required: '*필수 입력 항목입니다.',
+                })} />
+                {errors.CHARGER?.message && (<ErrorMessage>{errors.CHARGER?.message}</ErrorMessage>)}
+              </InputBox>
+              <PaddingBox />
+              <InputBox>
+                <Label>연락처</Label>
+                <Input type='phone' name='CHARGER_TELNO' placeholder='‘-’없이 숫자만 입력해주세요' {...register('CHARGER_TELNO', {
+                  required: '*필수 입력 항목입니다.',
+                  pattern: {
+                    value: /^((01[1|6|7|8|9])[1-9]+[0-9]{6,7})|(010[1-9][0-9]{7})$/,
+                    message: '잘못된 전화번호 입니다.'
+                  }})} />
+                  {errors.CHARGER_TELNO?.message && (<ErrorMessage>{errors.CHARGER_TELNO?.message}</ErrorMessage>)}
+              </InputBox>
+            </InputGrop>
+            <InputGrop>
+              <InputBox last>
+                <CalenderTitle>
+                  <Title title='희망일정' />
+                  <SubCheckGroup>
+                    <input id='TBD' type='checkbox' onClick={dateDefault} checked={date} /> 
+                    <label for='TBD'>미정</label>
+                  </SubCheckGroup>
+                </CalenderTitle>
+                <input
+                  type='date'
+                  name='HOPE_SCHDUL'
+                  readOnly={date}
+                  {...register('HOPE_SCHDUL')}
+                />
+              </InputBox>
+            </InputGrop>
+          </InputContainer>
+          <Button short>
+            <span>가입신청</span>
+            <ButtonValue 
+              name='VERSION'
+              value={'S'}
+              onClick={handleSubmit(onSubmit, onError)}
+              {...register('VERSION')}  />
+          </Button>
+        </>
       )}
       </ApplyContainer>
     </>

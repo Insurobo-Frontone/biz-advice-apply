@@ -39,7 +39,7 @@ function Header() {
         <Logo src={logo} alt='insurobo'/>
       </LogoBox>
       <TitleBox>
-        <Title title='기업자문신청서' bigTitle padding />
+        <Title title='비즈케어프로그램 신청서' bigTitle padding />
       </TitleBox>
     </Container>
     
