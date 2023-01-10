@@ -1108,8 +1108,8 @@ const FormComponent = ({detail, short}) => {
             </CheckList>
             {errors.CNSUT?.message && (<ErrorMessage>{errors.CNSUT?.message}</ErrorMessage>)}
             
-            <Title title='기 타' name='ETC' {...register('ETC')} />
-            <TextArea />
+            <Title title='기 타' />
+            <TextArea name='ETC' {...register('ETC')} />
           </InputContainer>
           <Button>
             <span>가입신청</span>
